@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Absolute Visualizer Freakout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&family=Ubuntu+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" id="drop-zone">
+        <div class="button-row compact-row">
+          <label class="file-input">
+            <span>Choose MP3</span>
+            <input id="file-input" type="file" accept=".mp3,audio/*" />
+          </label>
+
+          <button id="play-btn" class="primary" disabled>Play</button>
+          <button id="stop-btn" disabled>Stop</button>
+          <button id="export-btn" disabled>Export Video</button>
+          <label class="toggle-row export-toggle" for="mute-export-checkbox">
+            <input id="mute-export-checkbox" type="checkbox" checked />
+            <span>Silent speakers</span>
+          </label>
+        </div>
+
+        <div class="settings-grid">
+          <label class="field field-title">
+            <span>Title</span>
+            <input
+              id="title-input"
+              type="text"
+              maxlength="96"
+              placeholder="Edit video title"
+            />
+          </label>
+
+          <div class="field field-photo">
+            <span>Background</span>
+            <div class="field-actions">
+              <label class="mini-file-input">
+                <span id="background-image-label">Choose photo</span>
+                <input id="background-image-input" type="file" accept="image/*" />
+              </label>
+              <button id="clear-background-image-btn" type="button" disabled>Clear</button>
+            </div>
+          </div>
+
+          <label class="field field-template">
+            <span>Template</span>
+            <select id="template-select">
+              <option value="mirror">Mirror</option>
+              <option value="cross">Cross</option>
+              <option value="winter-neon">Winter Neon</option>
+            </select>
+          </label>
+
+          <div class="field field-button">
+            <span>Colors</span>
+            <button id="randomize-colors-btn" type="button">Randomize</button>
+          </div>
+
+          <label class="field field-range">
+            <span>Zoom</span>
+            <input
+              id="sensitivity-range"
+              type="range"
+              min="0.6"
+              max="1.8"
+              step="0.05"
+              value="1.1"
+            />
+          </label>
+
+          <label class="field field-range">
+            <span>Bars</span>
+            <input
+              id="bar-count-range"
+              type="range"
+              min="32"
+              max="112"
+              step="4"
+              value="68"
+            />
+          </label>
+
+        </div>
+
+        <div class="status-row">
+          <strong id="track-title">No track loaded</strong>
+          <p id="status-text">
+            Load an MP3 to start the preview and recording pipeline.
+          </p>
+        </div>
+      </section>
+
+      <section class="stage-wrap">
+        <canvas id="visualizer" width="1280" height="720"></canvas>
+      </section>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
