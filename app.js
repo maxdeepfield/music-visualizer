@@ -23,12 +23,22 @@ function getDisplayTitle() {
   return "";
 }
 
+function getDefaultTrackTitle() {
+  return state.file ? stripExtension(state.file.name) : "";
+}
+
+function syncCustomTitleState() {
+  const customTitle = dom.titleInput?.value.trim() || "";
+  const defaultTrackTitle = getDefaultTrackTitle();
+  state.hasCustomTitle = Boolean(customTitle) && customTitle !== defaultTrackTitle;
+}
+
 function syncTrackTitle() {
-  dom.trackTitle.textContent = getDisplayTitle() || "No track loaded";
+  dom.trackTitle.textContent = state.file ? (getDisplayTitle() || "No track loaded") : "No track loaded";
 }
 
 function isCrossTemplate() {
-  return dom.templateSelect.value === "cross" || dom.templateSelect.value === "winter-neon";
+  return dom.templateSelect.value === "cross" || dom.templateSelect.value === "winter-neon" || dom.templateSelect.value === "mirror-mirror";
 }
 
 function isWinterTemplate() {
@@ -73,6 +83,7 @@ function updateBackgroundImageControls() {
   dom.backgroundImageLabel.title = state.backgroundImageName || "";
   dom.clearBackgroundImageBtn.disabled = !state.backgroundImage || state.isRecording;
   dom.backgroundImageInput.disabled = state.isRecording;
+  dom.backgroundOpacityRange.disabled = !state.backgroundImage || state.isRecording;
 }
 
 function revokeBackgroundImageObjectUrl() {
@@ -157,6 +168,7 @@ function updateSupportState() {
 function updateButtons() {
   const hasTrack = Boolean(state.file && state.audioBuffer);
   const mp4Supported = Boolean(mediaController.pickMimeType());
+  dom.fileInput.value = "";
   dom.playBtn.disabled = !hasTrack || state.isRecording;
   dom.stopBtn.disabled = !hasTrack || (!state.isPlaying && !state.isRecording && state.playbackOffset === 0);
   dom.exportBtn.disabled = !hasTrack || !CAPTURE_SUPPORTED || !mp4Supported || state.isRecording;
@@ -208,6 +220,7 @@ const renderer = createRenderer({
 
 dom.fileInput.addEventListener("change", async (event) => {
   const [file] = event.target.files;
+  event.target.value = "";
   if (file) {
     await mediaController.loadFile(file);
   }
@@ -244,6 +257,7 @@ dom.exportBtn.addEventListener("click", () => {
 dom.muteExportCheckbox.addEventListener("change", mediaController.syncPlaybackGain);
 dom.muteExportCheckbox.addEventListener("change", saveSettings);
 dom.titleInput.addEventListener("input", () => {
+  syncCustomTitleState();
   syncTrackTitle();
   invalidateExport();
   saveSettings();
@@ -261,6 +275,10 @@ dom.templateSelect.addEventListener("change", () => {
   saveSettings();
 });
 dom.sensitivityRange.addEventListener("input", () => {
+  invalidateExport();
+  saveSettings();
+});
+dom.backgroundOpacityRange.addEventListener("input", () => {
   invalidateExport();
   saveSettings();
 });
@@ -289,6 +307,7 @@ window.addEventListener("beforeunload", mediaController.resetDownloadLink);
 window.addEventListener("beforeunload", revokeBackgroundImageObjectUrl);
 
 applySavedSettings({ dom, state, buildColorTheme, isValidColorTheme });
+syncCustomTitleState();
 updateSupportState();
 updateButtons();
 refreshStageOverlay();

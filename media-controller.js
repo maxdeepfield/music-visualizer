@@ -242,7 +242,10 @@ export function createMediaController({
     invalidateExport();
     state.file = file;
     state.audioBuffer = null;
+    state.hasCustomTitle = false;
     state.barLevels = [];
+    state.barRawLevels = [];
+    state.barEnergyFloors = [];
     state.bassEnergy = 0;
     state.bassFloor = 0;
     state.bassPulse = 0;
@@ -260,7 +263,10 @@ export function createMediaController({
     } catch (error) {
       state.file = null;
       state.audioBuffer = null;
+      state.hasCustomTitle = false;
       state.barLevels = [];
+      state.barRawLevels = [];
+      state.barEnergyFloors = [];
       state.bassEnergy = 0;
       dom.titleInput.value = "";
       syncTrackTitle();

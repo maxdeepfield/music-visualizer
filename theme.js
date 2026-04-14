@@ -101,6 +101,32 @@ function createDefaultColorTheme(template) {
     };
   }
 
+  if (template === "mirror-mirror") {
+    return {
+      backgroundStart: [10, 18, 12],
+      backgroundMid: [42, 78, 38],
+      backgroundEnd: [8, 14, 10],
+      vignetteCenter: [240, 252, 238],
+      vignetteMid: [28, 52, 26],
+      vignetteEdge: [6, 12, 8],
+      orbGlow: [148, 238, 218],
+      orbCore: [8, 18, 14],
+      ring: [148, 238, 218],
+      frame: [168, 248, 188],
+      logoGlow: [200, 255, 220],
+      progressTrack: [128, 218, 188],
+      progressFill: [168, 248, 188],
+      mirrorPrimary: [102, 212, 198],
+      mirrorSecondary: [172, 242, 148],
+      overlayTitle: [255, 255, 255],
+      overlayMeta: [178, 208, 188],
+      winterWhite: [245, 251, 255],
+      winterSnow: [214, 237, 255],
+      winterFrost: [179, 224, 255],
+      crossHueBase: 160,
+    };
+  }
+
   if (template === "cross") {
     return {
       backgroundStart: [7, 19, 28],

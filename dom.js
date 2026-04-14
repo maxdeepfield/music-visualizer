@@ -6,6 +6,7 @@ export const dom = {
   titleInput: document.getElementById("title-input"),
   backgroundImageInput: document.getElementById("background-image-input"),
   backgroundImageLabel: document.getElementById("background-image-label"),
+  backgroundOpacityRange: document.getElementById("background-opacity-range"),
   clearBackgroundImageBtn: document.getElementById("clear-background-image-btn"),
   playBtn: document.getElementById("play-btn"),
   stopBtn: document.getElementById("stop-btn"),

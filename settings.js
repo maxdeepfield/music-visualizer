@@ -1,7 +1,7 @@
 import { clamp } from "./utils.js";
 
 const SETTINGS_STORAGE_KEY = "music-visualizer-settings-v1";
-const TEMPLATE_VALUES = new Set(["mirror", "cross", "winter-neon"]);
+const TEMPLATE_VALUES = new Set(["mirror", "cross", "winter-neon", "mirror-mirror"]);
 
 function normalizeRangeInputValue(input, rawValue) {
   const min = Number(input.min);
@@ -41,15 +41,21 @@ function loadSavedSettings() {
 
 export function saveSettings({ dom, state, buildColorTheme }) {
   const colorTheme = state.colorTheme ?? buildColorTheme(dom.templateSelect.value);
+  const maxTitleLength = Number(dom.titleInput.maxLength) || 96;
+  const savedTitle = state.hasCustomTitle
+    ? dom.titleInput.value.slice(0, maxTitleLength)
+    : "";
 
   try {
     window.localStorage.setItem(
       SETTINGS_STORAGE_KEY,
       JSON.stringify({
         template: dom.templateSelect.value,
-        title: dom.titleInput.value.slice(0, Number(dom.titleInput.maxLength) || 96),
+        title: savedTitle,
+        hasCustomTitle: state.hasCustomTitle,
         muteExport: dom.muteExportCheckbox.checked,
         sensitivity: Number(dom.sensitivityRange.value),
+        backgroundOpacity: Number(dom.backgroundOpacityRange.value),
         barCount: Number(dom.barCountRange.value),
         colorTheme,
       })
@@ -71,8 +77,12 @@ export function applySavedSettings({ dom, state, buildColorTheme, isValidColorTh
     dom.templateSelect.value = savedSettings.template;
   }
 
-  if (typeof savedSettings.title === "string") {
+  if (savedSettings.hasCustomTitle === true && typeof savedSettings.title === "string") {
     dom.titleInput.value = savedSettings.title.slice(0, Number(dom.titleInput.maxLength) || 96);
+    state.hasCustomTitle = true;
+  } else {
+    dom.titleInput.value = "";
+    state.hasCustomTitle = false;
   }
 
   if (typeof savedSettings.muteExport === "boolean") {
@@ -80,6 +90,10 @@ export function applySavedSettings({ dom, state, buildColorTheme, isValidColorTh
   }
 
   dom.sensitivityRange.value = normalizeRangeInputValue(dom.sensitivityRange, savedSettings.sensitivity);
+  dom.backgroundOpacityRange.value = normalizeRangeInputValue(
+    dom.backgroundOpacityRange,
+    savedSettings.backgroundOpacity
+  );
   dom.barCountRange.value = normalizeRangeInputValue(dom.barCountRange, savedSettings.barCount);
   state.colorTheme = isValidColorTheme(savedSettings.colorTheme)
     ? savedSettings.colorTheme
