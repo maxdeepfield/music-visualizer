@@ -1,6 +1,8 @@
 # Absolute Visualizer Freakout
 
-Turn an audio file into a loud, glossy, overcaffeinated browser music video.
+Turn an audio file into a loud, glossy, overcaffeinated visualizer music video.
+
+<img width="2431" height="1335" alt="image" src="https://github.com/user-attachments/assets/39ae2b47-ee49-4bf2-b780-eaffa8adbf47" />
 
 Built with `canvas`, `Web Audio API`, and `MediaRecorder`. No backend. No timeline UI. Just upload a track, tweak the look, and let it freak out.
 
